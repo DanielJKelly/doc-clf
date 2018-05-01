@@ -10,15 +10,12 @@ from .forms import UploadFileForm
 from . import util
 
 def index(request):
-    return HttpResponse('Hello, welcome home')
+    return render(request, 'landing.html')
 
 def upload_file(request):
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
-        print(form.errors)
         if form.is_valid():
-            num_predictions = util.handle_uploaded_file(request.FILES['file'], request.POST['batch_name'])
-            messages.add_message(request, messages.INFO, '%d documents were processed' % num_predictions)
             return HttpResponseRedirect('results/%s' % request.POST['batch_name'])
     else:
         form = UploadFileForm()
@@ -26,4 +23,4 @@ def upload_file(request):
 
 def results(request, batch_name):
     batch_docs = util.get_docs_by_batch(batch_name)
-    return render(request, 'upload_success.html', {'batch_docs': batch_docs, 'batch_name': batch_name})
+    return render(request, 'results.html', {'batch_docs': batch_docs, 'batch_name': batch_name})
