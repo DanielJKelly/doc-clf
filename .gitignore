@@ -7,3 +7,4 @@
 settings_secret.py
 .DS_STORE
 .vscode
+.bashrc
