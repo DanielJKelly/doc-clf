@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+		
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <p>{{ form.non_field_errors }}</p>
+
+    <p>{{ form.docfile.label_tag }} {{ form.docfile.help_text }}</p>
+
+    <p>
+        {{ form.docfile.errors }}
+        {{ form.docfile }}
+    </p>
+        <input type="file" name="file">
+        <button type="submit">Upload</button>
+</form>
+    
+{% if uploaded_file_url %}
+    <p>File uploaded at: <a href="{{ uploaded_file_url }}">{{ uploaded_file_url }}</a></p>
+{% endif %}
+
+{% endblock %}
