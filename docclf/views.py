@@ -16,6 +16,7 @@ def upload_file(request):
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
+            util.handle_uploaded_file(request.FILES['file'], request.POST['batch_name'])
             return HttpResponseRedirect('results/%s' % request.POST['batch_name'])
     else:
         form = UploadFileForm()

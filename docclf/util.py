@@ -7,7 +7,6 @@ file_path = os.path.join(module_dir, 'doc_clf.sav')
 
 from docclf.models import Doc
 
-print(file_path)
 model = pickle.load(open(file_path, 'rb'))
 
 types = {
@@ -27,8 +26,6 @@ types = {
 }
 labels = Enum('Labels', types)
 
-    
-
 def handle_uploaded_file(f, batch_name):
     test_docs = []
     line_num = 0
@@ -37,18 +34,7 @@ def handle_uploaded_file(f, batch_name):
         prediction = model.predict([line])
         ids.append(insert_doc(batch_name, prediction, line, f, line_num))
         line_num += 1
-    print (list(map(lambda doc: doc.predicted_class,all_docs())))
-    print('ids: ', ids)
     return line_num
-
-
-# def predict_label(docs):
-#     text = list(map(lambda t: t[1], docs))
-#     line_nums = list(map(lambda t: t[0], docs))
-#     predictions = model.predict(text)
-#     named_pred = list(map(lambda p: labels(p).name, predictions))
-#     print (all_docs())
-#     return named_pred
 
 def insert_doc(batch_name, p, doc, f, num):
     d = Doc(batch_name=batch_name, predicted_class=p, content=doc, original_file_name='f', file_line_num=num)
@@ -67,4 +53,3 @@ def get_docs_by_batch(batch):
         p = doc.predicted_class
         doc.predicted_class = labels(p).name
     return docs_num_labels
-truncate_docs()
