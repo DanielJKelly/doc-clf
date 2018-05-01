@@ -1,1 +1,30 @@
-<h1>File uploaded successfully!</h1>
+{% extends 'base.html' %}
+
+{% block content %}
+    {% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+
+
+{% endif %}
+
+
+{% if batch_docs %}
+    <section>
+        <header>Results for Batch {{ batch_name }}</header>
+    </section>
+        <ol class="doc-results">
+            {% for doc in batch_docs  %}
+                <li>Doc {{ doc.file_line_num }}</li>
+                    <ul>
+                        <li>Best guess: {{ doc.predicted_class }}</li>
+                    </ul>
+            {% endfor %}
+        </ol>
+
+{% endif %}
+
+{% endblock %}
