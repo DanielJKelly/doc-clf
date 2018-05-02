@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<a href="/docclf/results/{{ doc.batch_name }}">Back to Batch Results</a>
+{% if doc %}
+
+<div class="container">
+    <header class="h2">Document {{ doc.id}} from Batch {{ doc.batch_name }} ({{ doc.original_file_name }})</header>
+        <header class="h4">Predicted: {{ doc.predicted_class }}</header>
+        
+        {% if doc.actual_class != 0 %}
+            <header class="h4">Actual: {{ doc.actual_class }}</header>
+        {% endif %}
+        <article>{{ doc.content }}</article>
+</div>  
+
+
+{% endif %}ß
+{% endblock %}

@@ -2,7 +2,6 @@ import pickle
 from enum import Enum
 import os
 from sklearn import metrics
-import numpy as np
 module_dir = os.path.dirname(__file__)
 file_path = os.path.join(module_dir, 'doc_clf.sav')
 
@@ -43,7 +42,6 @@ def handle_uploaded_file(f, batch_name):
             prediction = model.predict([data])
             insert_doc(batch_name, prediction, data, f.name, line_num)
             line_num += 1
-    return line_num
 
 def insert_doc(batch_name, pred, doc, f, num, actual=0):
     d = Doc(batch_name=batch_name, predicted_class=pred, content=doc, original_file_name=f, file_line_num=num, actual_class=actual)
@@ -53,9 +51,6 @@ def insert_doc(batch_name, pred, doc, f, num, actual=0):
 def all_docs():
     return Doc.objects.all()
 
-def truncate_docs():
-    Doc.objects.all().delete()
-
 def get_docs_by_batch(batch):
     docs_num_labels = Doc.objects.filter(batch_name=batch).order_by('file_line_num')
     for doc in docs_num_labels: 
@@ -64,8 +59,17 @@ def get_docs_by_batch(batch):
         doc.predicted_class = labels(p).name
         if a != 0: 
             doc.actual_class = labels(a).name
-    
     return docs_num_labels
+
+def get_doc_by_id(id):
+    doc = Doc.objects.get(pk=id)
+    
+    p = doc.predicted_class
+    a = doc.actual_class
+    doc.predicted_class = labels(p).name
+    if a != 0: 
+        doc.actual_class = labels(a).name
+    return doc
 
 def get_mean_accuracy(docs):
     correct = 0

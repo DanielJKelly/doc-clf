@@ -11,7 +11,7 @@
     {% endif %}
     <div class="list-group">
         {% for doc in batch_docs  %}
-            <a>
+            <a href= 'document/{{ doc.id }}'>
                 <header class="h4 list-group-item-heading">Doc {{ doc.file_line_num }}</header>
             </a>
             
@@ -43,8 +43,6 @@
        
     </div>
 </div>    
-
-<a href="/docclf/upload">Upload More Documents</a>
 
 {% endblock %}
 

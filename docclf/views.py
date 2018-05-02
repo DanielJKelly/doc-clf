@@ -1,9 +1,4 @@
 from django.shortcuts import render
-from django.contrib import messages
-from django.core.cache import cache
-
-# Create your views here.
-
 from django.http import HttpResponse 
 from django.http import HttpResponseRedirect
 from .forms import UploadFileForm
@@ -27,3 +22,7 @@ def results(request, batch_name):
     accuracy = util.get_mean_accuracy(batch_docs)
     original_file_name = batch_docs[0].original_file_name
     return render(request, 'results.html', {'batch_docs': batch_docs, 'batch_name': batch_name, 'original_file_name': original_file_name, 'accuracy': accuracy})
+
+def document(request, doc_id): 
+    doc = util.get_doc_by_id(doc_id)
+    return render(request, 'document.html', {'doc': doc})

@@ -1,6 +1,37 @@
 {% extends 'base.html' %}
 {% block content %}
 <nav>
-  <a href="/docclf/upload">Mortgage Document Classifier</a>
+  <div class="container">
+      <a href="/docclf/upload">
+        <header class="h2">Mortgage Document Classifier</header> 
+      </a>
+     
+    
+    <p>This app uses a trained Machine Learning model to classify Mortgage Documents.</p>
+    <p>Documents must be submitted as a .txt or .csv file where each line of the file contains the words of a single document.</p>
+    <p>If no labels are provided, the ouput will be only the predicted class of document. If labels are provided, the 
+       predicted and actual classes will be outputted, along with the average accuracy for that batch of files.
+    </p>
+    <p>The model currently supports the following classes: </p>
+    <div class="list-group">
+      <ul>
+        <li>DELETION OF INTEREST</li>
+        <li>RETURNED CHECK</li>
+        <li>BILL</li>
+        <li>POLICY CHANGE</li>
+        <li>CANCELLATION NOTICE</li>
+        <li>DECLARATION</li>
+        <li>CHANGE ENDORSEMENT</li>
+        <li>NON-RENEWAL NOTICE</li>
+        <li>BINDER</li>
+        <li>REINSTATEMENT NOTICE</li>
+        <li>EXPIRATION NOTICE</li>
+        <li>INTENT TO CANCEL NOTICE</li>
+        <li>APPLICATION</li>
+        <li>BILL BINDER</li>
+      </ul>
+    </div>
+  </div>
+  
 </nav>
 {% endblock %}
