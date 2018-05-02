@@ -1,22 +1,22 @@
 {% extends 'base.html' %}
 
 {% block content %}
-		
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    <p>{{ form.non_field_errors }}</p>
-
-    <p>{{ form.docfile.label_tag }} {{ form.docfile.help_text }}</p>
-
-    <p>
-        {{ form.docfile.errors }}
-        {{ form.docfile }}
-    </p>
-    <label>Batch Name</label>
-    <input type="text" name ="batch_name">    
-    <input type="file" name="file">
-    <button type="submit">Upload</button>
-</form>
+<div class="container">
+    <header class="h2">Mortgage Document Upload Form</header>
+	
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+            <label>Batch Name</label>
+            <input type="text" class="form-control" name ="batch_name"> 
+        </div>
+        <div class="form-group">
+            <input type="file" name="file">
+        </div>
+        
+        <button type="submit" class="btn btn-default">Upload</button>
+    </form>
+</div>	
     
 {% if uploaded_file_url %}
     <p>File uploaded at: <a href="{{ uploaded_file_url }}">{{ uploaded_file_url }}</a></p>

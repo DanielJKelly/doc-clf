@@ -3,37 +3,49 @@
 {% block content %}
 
 {% if batch_docs %}
-    <section>
-        <header class="h2">Results for Batch {{ batch_name }} ( {{ doc.original_file_name }} )</header>
-    </section>
-        <ol class="list-group">
-            {% for doc in batch_docs  %}
-                <li>Doc {{ doc.file_line_num }}</li>
-                
 
-                <ul>
-                    {% if doc.actual_class != 0  %}    
-                        <span 
-                                {% if doc.predicted_class != doc.actual_class %} 
-                                    style="color:red"
-                                {% else %}
-                                    style="color:green"
-                                {% endif %}>
-                                <li>Prediction: {{ doc.predicted_class }}</li>
-                                <li>Actual: {{ doc.actual_class }}</li>
-                                
-                            </span>
-                    {% else %}
-                            <span>
-                                <li>Prediction: {{ doc.predicted_class }}</li>
-                            </span>
-                    {% endif %}
-                </ul>
-            {% endfor %}
-        </ol>
-
-{% endif %}
+<div class="container">
+    <header class="h2">Results for Batch {{ batch_name }} ({{ original_file_name }}) </header>
+    {% if accuracy != None %}
+    <header class="h4">Mean Accuracy: {{ accuracy }}</header>
+    {% endif %}
+    <div class="list-group">
+        {% for doc in batch_docs  %}
+            <a>
+                <header class="h4 list-group-item-heading">Doc {{ doc.file_line_num }}</header>
+            </a>
+            
+        <p 
+        {% if doc.actual_class == 0 %}
+                class="list-group-item"
+            {% elif doc.predicted_class != doc.actual_class %}
+                    class="list-group-item-danger"
+            {% else %}
+                class="list-group-item-success"
+            {% endif %}>Prediction: {{ doc.predicted_class }}
+        
+        </p>
+        {% if doc.actual_class != 0 %}
+            <p 
+            {% if doc.actual_class == 0 %}
+                class="list-group-item"
+            {% elif doc.predicted_class != doc.actual_class %}
+                    class="list-group-item-danger"
+            {% else %}
+                class="list-group-item-success"
+            {% endif %}>Actual: {{ doc.actual_class }}
+            </p>
+        {% endif %}
+        
+        
+        {% endfor %}
+        {% endif %}
+       
+    </div>
+</div>    
 
 <a href="/docclf/upload">Upload More Documents</a>
 
 {% endblock %}
+
+

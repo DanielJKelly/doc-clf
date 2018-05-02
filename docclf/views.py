@@ -24,4 +24,6 @@ def upload_file(request):
 
 def results(request, batch_name):
     batch_docs = util.get_docs_by_batch(batch_name)
-    return render(request, 'results.html', {'batch_docs': batch_docs, 'batch_name': batch_name})
+    accuracy = util.get_mean_accuracy(batch_docs)
+    original_file_name = batch_docs[0].original_file_name
+    return render(request, 'results.html', {'batch_docs': batch_docs, 'batch_name': batch_name, 'original_file_name': original_file_name, 'accuracy': accuracy})

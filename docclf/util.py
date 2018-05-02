@@ -2,6 +2,7 @@ import pickle
 from enum import Enum
 import os
 from sklearn import metrics
+import numpy as np
 module_dir = os.path.dirname(__file__)
 file_path = os.path.join(module_dir, 'doc_clf.sav')
 
@@ -12,7 +13,8 @@ model = pickle.load(open(file_path, 'rb'))
 types = {
     'DELETION OF INTEREST': 1, 
     'RETURNED CHECK': 2, 
-    'BILL': 3, 'POLICY CHANGE': 4, 
+    'BILL': 3, 
+    'POLICY CHANGE': 4, 
     'CANCELLATION NOTICE': 5, 
     'DECLARATION': 6, 
     'CHANGE ENDORSEMENT': 7, 
@@ -28,7 +30,6 @@ labels = Enum('Labels', types)
 
 def handle_uploaded_file(f, batch_name):
     line_num = 0
-    print (f.name)
     for line in f:
         s = line.decode('utf-8').strip()
         data = check_for_labels(s)
@@ -63,8 +64,24 @@ def get_docs_by_batch(batch):
         doc.predicted_class = labels(p).name
         if a != 0: 
             doc.actual_class = labels(a).name
-
+    
     return docs_num_labels
+
+def get_mean_accuracy(docs):
+    correct = 0
+    y = []
+    predictions = []
+    for doc in docs:
+        if doc.actual_class != 0:
+            y.append(types[doc.actual_class])
+            predictions.append(types[doc.predicted_class])
+    if len(y) != 0 and len(predictions) != 0 and len(y) == len(predictions):
+        for t in zip(predictions, y):
+            if t[0] == t[1]:
+                correct += 1
+        return correct / len(y)
+    else:
+        return None
 
 def check_for_labels(line):
     comma = line.find(',')
