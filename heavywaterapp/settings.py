@@ -25,7 +25,7 @@ DEBUG = False
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 ALLOWED_HOSTS = [
-    'django-env3.p3r3dh3xti.us-east-1.elasticbeanstalk.com',
+    'django-env4.p3r3dh3xti.us-east-1.elasticbeanstalk.com',
     'localhost',
     '127.0.0.1'
 ]
