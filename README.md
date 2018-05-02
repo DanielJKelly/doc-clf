@@ -2,9 +2,9 @@
 
 To deploy to AWS Elastic Beanstalk starting from existing Django App with EB CLI: 
 
-From root dir, eb init -p python-<VERSION> <APP NAME>
+From root dir, eb init -p python-VERSION APP_NAME
 
-eb create <ENVIRONMENT NAME> 
+eb create ENVIRONMENT_NAME
 
 Modify the allowed hosts in settings.py to allow the newly created environment
 
