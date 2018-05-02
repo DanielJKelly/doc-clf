@@ -27,17 +27,25 @@ types = {
 labels = Enum('Labels', types)
 
 def handle_uploaded_file(f, batch_name):
-    test_docs = []
     line_num = 0
-    ids = []
+    print (f.name)
     for line in f:
-        prediction = model.predict([line])
-        ids.append(insert_doc(batch_name, prediction, line, f, line_num))
-        line_num += 1
+        s = line.decode('utf-8').strip()
+        data = check_for_labels(s)
+        if type(data) is tuple:
+            label = data[0]
+            text = data[1] 
+            prediction = model.predict([text])
+            insert_doc(batch_name, prediction, text, f.name, line_num, label)
+            line_num += 1
+        else:
+            prediction = model.predict([data])
+            insert_doc(batch_name, prediction, data, f.name, line_num)
+            line_num += 1
     return line_num
 
-def insert_doc(batch_name, p, doc, f, num):
-    d = Doc(batch_name=batch_name, predicted_class=p, content=doc, original_file_name='f', file_line_num=num)
+def insert_doc(batch_name, pred, doc, f, num, actual=0):
+    d = Doc(batch_name=batch_name, predicted_class=pred, content=doc, original_file_name=f, file_line_num=num, actual_class=actual)
     d.save()
     return d.id
 
@@ -51,5 +59,20 @@ def get_docs_by_batch(batch):
     docs_num_labels = Doc.objects.filter(batch_name=batch).order_by('file_line_num')
     for doc in docs_num_labels: 
         p = doc.predicted_class
+        a = doc.actual_class
         doc.predicted_class = labels(p).name
+        if a != 0: 
+            doc.actual_class = labels(a).name
+
     return docs_num_labels
+
+def check_for_labels(line):
+    comma = line.find(',')
+    if comma != -1:
+        label = line[0:comma].strip()
+        text = line[comma + 1:].strip()
+        if label in types:
+            int_label = types[label]
+            return (int_label, text)
+    else:
+        return line

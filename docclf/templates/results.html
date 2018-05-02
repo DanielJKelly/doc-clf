@@ -4,17 +4,36 @@
 
 {% if batch_docs %}
     <section>
-        <header>Results for Batch {{ batch_name }}</header>
+        <header class="h2">Results for Batch {{ batch_name }} ( {{ doc.original_file_name }} )</header>
     </section>
-        <ol class="doc-results">
+        <ol class="list-group">
             {% for doc in batch_docs  %}
                 <li>Doc {{ doc.file_line_num }}</li>
-                    <ul>
-                        <li>Best guess: {{ doc.predicted_class }}</li>
-                    </ul>
+                
+
+                <ul>
+                    {% if doc.actual_class != 0  %}    
+                        <span 
+                                {% if doc.predicted_class != doc.actual_class %} 
+                                    style="color:red"
+                                {% else %}
+                                    style="color:green"
+                                {% endif %}>
+                                <li>Prediction: {{ doc.predicted_class }}</li>
+                                <li>Actual: {{ doc.actual_class }}</li>
+                                
+                            </span>
+                    {% else %}
+                            <span>
+                                <li>Prediction: {{ doc.predicted_class }}</li>
+                            </span>
+                    {% endif %}
+                </ul>
             {% endfor %}
         </ol>
 
 {% endif %}
+
+<a href="/docclf/upload">Upload More Documents</a>
 
 {% endblock %}
